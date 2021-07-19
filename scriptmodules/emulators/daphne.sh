@@ -13,15 +13,16 @@ rp_module_id="daphne"
 rp_module_desc="Daphne - Laserdisc Emulator"
 rp_module_help="ROM Extension: .daphne\n\nCopy your Daphne roms to $romdir/daphne"
 rp_module_licence="GPL2 https://raw.githubusercontent.com/RetroPie/daphne-emu/master/COPYING"
+rp_module_repo="git https://github.com/RetroPie/daphne-emu.git retropie"
 rp_module_section="opt"
-rp_module_flags="dispmanx !x86 !mali"
+rp_module_flags="sdl1 !x86 !mali"
 
 function depends_daphne() {
     getDepends libsdl1.2-dev libvorbis-dev libglew-dev zlib1g-dev
 }
 
 function sources_daphne() {
-    gitPullOrClone "$md_build" https://github.com/RetroPie/daphne-emu.git retropie
+    gitPullOrClone
 }
 
 function build_daphne() {
@@ -33,6 +34,7 @@ function build_daphne() {
     cd ..
     ln -sf Makefile.vars.rp Makefile.vars
     make STATIC_VLDP=1
+    md_ret_require="$md_build/daphne.bin"
 }
 
 function install_daphne() {
@@ -55,7 +57,7 @@ function configure_daphne() {
 
     mkUserDir "$md_conf_root/daphne"
 
-    setDispmanx "$md_id" 1
+    isPlatform "dispmanx" && setBackend "$md_id" "dispmanx"
 
     if [[ ! -f "$md_conf_root/daphne/dapinput.ini" ]]; then
         cp -v "$md_data/dapinput.ini" "$md_conf_root/daphne/dapinput.ini"

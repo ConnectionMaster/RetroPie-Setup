@@ -12,8 +12,16 @@
 rp_module_id="dxx-rebirth"
 rp_module_desc="DXX-Rebirth (Descent & Descent 2) source port"
 rp_module_licence="NONCOM https://raw.githubusercontent.com/dxx-rebirth/dxx-rebirth/master/COPYING.txt"
+rp_module_repo="git https://github.com/dxx-rebirth/dxx-rebirth master :_get_commit_dxx-rebirth"
 rp_module_section="opt"
 rp_module_flags="!mali"
+
+function _get_commit_dxx-rebirth() {
+    local commit="15bd145d"
+    # latest code requires gcc 7+
+    compareVersions "$__gcc_version" lt 7 && commit="a1b3a86c"
+    echo "$commit"
+}
 
 function depends_dxx-rebirth() {
     local depends=(libpng-dev libphysfs-dev scons)
@@ -27,10 +35,7 @@ function depends_dxx-rebirth() {
 }
 
 function sources_dxx-rebirth() {
-    local commit=""
-    # latest code requires gcc 7+
-    compareVersions "$__gcc_version" lt 7 && commit="a1b3a86c"
-    gitPullOrClone "$md_build" https://github.com/dxx-rebirth/dxx-rebirth "master" "$commit"
+    gitPullOrClone
 }
 
 function build_dxx-rebirth() {
@@ -121,10 +126,13 @@ function configure_dxx-rebirth() {
     local ver
     local name="Descent Rebirth"
     for ver in 1 2; do
-        mkRomDir "ports/descent${ver}"
         [[ "$ver" -eq 2 ]] && name="Descent 2 Rebirth"
         addPort "$md_id" "descent${ver}" "$name" "$md_inst/d${ver}x-rebirth -hogdir $romdir/ports/descent${ver}"
 
+        # skip folder / config work on removal
+        [[ "$md_mode" == "remove" ]] && continue
+
+        mkRomDir "ports/descent${ver}"
         # copy any existing configs from ~/.d1x-rebirth and symlink the config folder to $md_conf_root/descent1/
         moveConfigDir "$home/.d${ver}x-rebirth" "$md_conf_root/descent${ver}/"
         if isPlatform "kms"; then

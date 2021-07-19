@@ -68,8 +68,6 @@ function gui_esthemes() {
         'AmadhiX eudora'
         'AmadhiX eudora-bigshot'
         'AmadhiX eudora-concise'
-        'InsecureSpike retroplay-clean-canela'
-        'InsecureSpike retroplay-clean-detail-canela'
         'Omnija simpler-turtlepi'
         'Omnija simpler-turtlemini'
         'Omnija metro'
@@ -232,6 +230,8 @@ function gui_esthemes() {
         'lipebello retrorama-turbo'
         'lipebello strangerstuff'
         'lipebello spaceoddity'
+        'lipebello spaceoddity-43'
+        'lipebello spaceoddity-wide'
         'lipebello swineapple'
         'waweedman pii-wii'
         'waweedman Blade-360'
@@ -257,6 +257,7 @@ function gui_esthemes() {
         'KALEL1981 super-arcade1up-5x4'
         'KALEL1981 gold-standard'
         'Elratauru angular-artwork'
+        'cjonasw raspixel-320-240'
     )
     while true; do
         local theme
